@@ -1,0 +1,23 @@
+{
+  "name": "notify-youtube-discord",
+  "version": "1.0.0",
+  "description": "New post video youtube to discord",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/T-TutoRapide/Notify-Youtube-discord.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/T-TutoRapide/Notify-Youtube-discord/issues"
+  },
+  "homepage": "https://github.com/T-TutoRapide/Notify-Youtube-discord#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cron": "^1.8.2"
+  }
+}
