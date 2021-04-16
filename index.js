@@ -25,7 +25,7 @@ try { current = JSON.parse(readFileSync(path.join(__dirname, 'current.json'), 'u
                 post(config.webhook, {
                     "username": config.username,
                     "avatar_url": config.iconUrl,
-                    "content": `Hey <@&753294055596884006>, ${res.data.items[0].snippet.title} vient juste de poster une vidéo ! Allez la voir !`,
+                    "content": `${res.data.items[0].snippet.title} has just posted a video! Go see it!`,
                     "embeds": [
                         {
                             title: `${res.data.items[0].snippet.title}`,
@@ -45,7 +45,7 @@ try { current = JSON.parse(readFileSync(path.join(__dirname, 'current.json'), 'u
             console.log(error);
         }
 
-}, null, true, 'Europe/Paris');
-console.log('Lancement du job...')
+}, null, true, 'Europe/Paris'); //List timezone https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+console.log('Job Start...')
 job.start();
-console.log('Job en attente...')
+console.log('Job pending...')
