@@ -27,7 +27,7 @@ To keep the program running in the background on your server you can use **pm2**
 You can choose any name you want.
 
 **Preview**
-![](https://sharemedia.tutorapide.xyz/mazHyRcB.png)
+![](https://sharemedia.tutorapide.xyz/hmyK7RYW.png)
 
 ##### Contact
 
