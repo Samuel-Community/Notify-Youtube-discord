@@ -8,12 +8,15 @@ let current = {}
 try { current = JSON.parse(readFileSync(path.join(__dirname, 'current.json'), 'utf8')) } catch (e) { };
  
     const job = new CronJob('*/10 * * * *', function() {
+        
        try {
             get(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${config.idChannel}&order=date&maxResults=50&key=${config.tokenYT}`, {
                 headers: {
                     Accept: "application/json",
                 }
             }).then((res) => {
+
+                console.log(res.data.items[0].id.videoId)
 
                 let latest = res.data.items[0].id.videoId;
 
@@ -46,7 +49,7 @@ try { current = JSON.parse(readFileSync(path.join(__dirname, 'current.json'), 'u
             console.log(error);
         }
 
-}, null, true, 'Europe/Paris'); //List timezone https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+}, null, true, 'Europe/Paris');
 console.log('Job Start...')
 job.start();
 console.log('Job pending...')
