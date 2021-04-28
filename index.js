@@ -47,7 +47,7 @@ try { current = JSON.parse(readFileSync(path.join(__dirname, 'current.json'), 'u
             console.log(error);
         }
 
-}, null, true, 'Europe/Paris');
+}, null, true, 'Europe/Paris'); //List timezone https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 console.log('Job Start...')
 job.start();
 console.log('Job pending...')
