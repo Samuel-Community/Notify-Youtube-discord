@@ -6,8 +6,9 @@ const {get, post} = require("axios"),
 
 let current = {}
 try { current = JSON.parse(readFileSync(path.join(__dirname, 'current.json'), 'utf8')) } catch (e) { };
-     const job = new CronJob('*/10 * * * *', function() {
-        try {
+ 
+    const job = new CronJob('*/10 * * * *', function() {
+       try {
             get(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${config.idChannel}&order=date&maxResults=50&key=${config.tokenYT}`, {
                 headers: {
                     Accept: "application/json",
