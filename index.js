@@ -28,7 +28,7 @@ try { current = JSON.parse(readFileSync(path.join(__dirname, 'current.json'), 'u
                 post(config.webhook, {
                     "username": config.username,
                     "avatar_url": config.iconUrl,
-                    "content": `<@&753294055596884006> **${res.data.items[0].snippet.channelTitle}** vient juste de poster une vidéo ! Allez la voir !`,
+                    "content": `**${res.data.items[0].snippet.channelTitle}** has just posted a video! Go see it!`,
                     "embeds": [
                         {
                             title: `${res.data.items[0].snippet.title}`,
