@@ -6,13 +6,16 @@ const {get, post} = require("axios"),
 
 let current = {}
 try { current = JSON.parse(readFileSync(path.join(__dirname, 'current.json'), 'utf8')) } catch (e) { };
-     const job = new CronJob('*/10 * * * *', function() {
-        try {
+ 
+    const job = new CronJob('*/2 * * * *', function() {
+       try {
             get(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${config.idChannel}&order=date&maxResults=50&key=${config.tokenYT}`, {
                 headers: {
                     Accept: "application/json",
                 }
             }).then((res) => {
+
+                console.log(res.data.items[0].id.videoId)
 
                 let latest = res.data.items[0].id.videoId;
 
@@ -25,7 +28,7 @@ try { current = JSON.parse(readFileSync(path.join(__dirname, 'current.json'), 'u
                 post(config.webhook, {
                     "username": config.username,
                     "avatar_url": config.iconUrl,
-                    "content": `**${res.data.items[0].snippet.channelTitle}** has just posted a video! Go see it!`,
+                    "content": `<@&753294055596884006> **${res.data.items[0].snippet.channelTitle}** vient juste de poster une vidéo ! Allez la voir !`,
                     "embeds": [
                         {
                             title: `${res.data.items[0].snippet.title}`,
@@ -45,7 +48,7 @@ try { current = JSON.parse(readFileSync(path.join(__dirname, 'current.json'), 'u
             console.log(error);
         }
 
-}, null, true, 'Europe/Paris'); //List timezone https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+}, null, true, 'Europe/Paris');
 console.log('Job Start...')
 job.start();
 console.log('Job pending...')
