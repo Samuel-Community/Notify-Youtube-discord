@@ -1,37 +1,53 @@
-# Youtube discord
+# YouTube Discord
 
-Send a notification when you post a new youtube video on discord
+Send a notification on Discord when you upload a new YouTube video.
 
 ## Installation
 
-Clone the **Project** or download it.
+1. **Clone** the project or download it.
+2. **Open a terminal** in the project folder.
+3. Run **npm install** to install the dependencies.
+4. Rename the file **example.env** to **.env**.
 
-Then open a terminal in the project folder.
+### Configuring the `.env` file
 
-Do an **npm install** to install the dependencies.
+Fill in the following details in the `.env` file:
 
-Change the name of the file **example_config.js** to **config.js** and **example_current.json** to **current.json**
-
-And complete the following information. Put the information in the **' '**
-
-    webhook:  '', link webhook discord
-    iconUrl: '', url avatar
-    idChannel: '', id channel youtube https://www.youtube.com/account_advanced
-    tokenYT: '',  https://console.cloud.google.com/
-    username: '' username webhook
+WEBHOOK_URL=          # Discord webhook URL 
+AVATAR_URL=           # URL du webhook Discord
+YOUTUBE_CHANNEL_ID=   # YouTube channel ID (find it here: https://www.youtube.com/account_advanced)
 
 
-Once all this is done. Make node **index.js** a request will be made every 10 minutes.
+### Database
 
-To keep the program running in the background on your server you can use **pm2** if you have it. **pm2 start index.js --name "Webhook-Youtube"**.
-You can choose any name you want.
+Make sure you have a **MongoDB** instance ready (local or remote).  
+By default, the script connects to:  
+`mongodb://localhost:27017/discordbot`.
+
+If you use a different address, update it in the main script or add it as an environment variable.
+
+---
+
+## Running the Script
+
+1. Run the following command to start the script:
+
+
+   ```bash node index.js```
+
+The script will check for new videos every 5 minutes.
+
+2. Keep the script running in the background:
+If you want the script to run continuously on a server, use pm2:
+
+```pm2 start index.js --name "Webhook-Youtube"```
+You can replace "Webhook-Youtube" with any name you prefer.
 
 **Preview**
-![](https://sharemedia.tutorapide.xyz/hmyK7RYW.png)
+![](https://media.tutorapide.xyz/G4nUj7lVKRrn.png)
 
 ##### Contact
 
-Discord: *𝓢amuel#7455*
 
 ![Discord Banner 2](https://discordapp.com/api/guilds/753294055554809956/widget.png?style=banner2)
 
