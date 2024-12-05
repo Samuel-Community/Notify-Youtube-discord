@@ -13,10 +13,10 @@ Send a notification on Discord when you upload a new YouTube video.
 
 Fill in the following details in the `.env` file:
 
-WEBHOOK_URL=          # Discord webhook URL 
-AVATAR_URL=           # URL du webhook Discord
-YOUTUBE_CHANNEL_ID=   # YouTube channel ID (find it here: https://www.youtube.com/account_advanced)
-
+WEBHOOK_URL= # Discord webhook URL<br>
+AVATAR_URL= # URL du webhook Discord<br>
+YOUTUBE_CHANNEL_ID= # YouTube channel ID (find it here: https://www.youtube.com/account_advanced)<br>
+MONGODB=mongodb://localhost:27017/discordbot
 
 ### Database
 
