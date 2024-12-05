@@ -1,53 +1,78 @@
-const {get, post} = require("axios"),
- { readFileSync, writeFileSync } = require('fs'),
- path = require('path'),
- CronJob = require('cron').CronJob,
- config  = require('./config.js')
+require('dotenv').config();
+const axios = require('axios');
+const RSSParser = require('rss-parser');
+const mongoose = require('mongoose');
+const Video = require('./video'); // Le modèle Mongoose pour les vidéos
 
-let current = {}
-try { current = JSON.parse(readFileSync(path.join(__dirname, 'current.json'), 'utf8')) } catch (e) { };
- 
-    const job = new CronJob('*/10 * * * *', function() {
+const parser = new RSSParser();
 
-       try {
-            get(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${config.idChannel}&order=date&maxResults=50&key=${config.tokenYT}`, {
-                headers: {
-                    Accept: "application/json",
-                }
-            }).then((res) => {
+// ID de la chaîne YouTube et URL du webhook
+const WEBHOOK_URL = process.env.WEBHOOK_URL;
+const YOUTUBE_CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID;
 
-                let latest = res.data.items[0].id.videoId;
+// Connexion à MongoDB
+mongoose.connect('mongodb://localhost:27017/youtube', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => console.log('Connecté à MongoDB'))
+  .catch(err => console.error('Erreur de connexion à MongoDB :', err));
 
-                if (latest === current) return;
-        
-                current = latest;
+// Fonction pour récupérer ou initialiser l'ID de la dernière vidéo
+async function getLastVideoId() {
+  let video = await Video.findOne({ channelId: YOUTUBE_CHANNEL_ID });
+  if (!video) {
+    video = await Video.create({ channelId: YOUTUBE_CHANNEL_ID, lastVideoId: '' });
+  }
+  return video;
+}
 
-                console.log('Post Youtube');
+// Fonction pour mettre à jour l'ID de la dernière vidéo
+async function updateLastVideoId(videoId) {
+  await Video.findOneAndUpdate(
+    { channelId: YOUTUBE_CHANNEL_ID },
+    { lastVideoId: videoId }
+  );
+}
 
-                post(config.webhook, {
-                    "username": config.username,
-                    "avatar_url": config.iconUrl,
-                    "content": `**${res.data.items[0].snippet.channelTitle}** has just posted a video! Go see it!`,
-                    "embeds": [
-                        {
-                            title: `${res.data.items[0].snippet.title}`,
-                            color: 0xFF0000,
-                            url: `https://www.youtube.com/watch?v=${res.data.items[0].id.videoId}`,
-                            image: { url: `https://img.youtube.com/vi/${res.data.items[0].id.videoId}/maxresdefault.jpg`},
-                            author: { name: res.data.items[0].snippet.channelTitle, icon_url: config.iconUrl },
-                            footer: { icon_url: config.iconUrl, text: res.data.items[0].snippet.channelTitle },
-        
-                        }
-                    ],
-                }); 
-                writeFileSync(path.join(__dirname, 'current.json'), JSON.stringify(current), 'utf8')
-            });
+// Fonction pour envoyer un message via le webhook
+async function sendWebhookMessage(message, channelName) {
+  try {
+    await axios.post(WEBHOOK_URL, {
+      content: message, // Contenu du message
+      username: channelName,
+      avatar_url: process.env.AVATAR_URL
+    });
+    console.log('Message envoyé via le webhook');
+  } catch (error) {
+    console.error('Erreur lors de l\'envoi du webhook :', error);
+  }
+}
 
-        } catch (error) {
-            console.log(error);
-        }
+// Fonction pour vérifier les nouvelles vidéos
+async function checkForNewVideos() {
+  try {
+    const feed = await parser.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${YOUTUBE_CHANNEL_ID}`);
+    const latestVideo = feed.items[0];
+    const channelName = feed.title; // Récupère le nom de la chaîne
 
-}, null, true, 'Europe/Paris'); //List timezone https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-console.log('Job Start...')
-job.start();
-console.log('Job pending...')
+    const videoData = await getLastVideoId();
+
+    if (latestVideo.id !== videoData.lastVideoId) {
+      // Mise à jour de la base de données
+      await updateLastVideoId(latestVideo.id);
+
+      // Envoi du message via le webhook
+      const message = `🎥 Nouvelle vidéo publiée : **${latestVideo.title}**\n${latestVideo.link}`;
+      await sendWebhookMessage(message, channelName);
+    }
+  } catch (error) {
+    console.error('Erreur lors de la vérification des vidéos YouTube :', error);
+  }
+}
+
+// Lancer la vérification toutes les 5 minutes
+setInterval(checkForNewVideos, 5 * 60 * 1000);
+
+// Vérification au démarrage
+checkForNewVideos();
