@@ -11,10 +11,7 @@ const WEBHOOK_URL = process.env.WEBHOOK_URL;
 const YOUTUBE_CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID;
 process.env.YMONGODB
 // Connexion à MongoDB
-mongoose.connect(process.env.MONGODB, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect(process.env.MONGODB)
   .then(() => console.log('Connecté à MongoDB'))
   .catch(err => console.error('Erreur de connexion à MongoDB :', err));
 
