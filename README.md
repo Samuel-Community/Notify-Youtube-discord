@@ -11,7 +11,7 @@ Send a notification on Discord when you upload a new YouTube video.
 
 ### Configuring the `.env` file
 
-Rename `.env-example` to `.env`
+Rename `.env-example` to `.env`.<br>
 Fill in the following details in the `.env` file:
 
 WEBHOOK_URL= # Discord webhook URL<br>
