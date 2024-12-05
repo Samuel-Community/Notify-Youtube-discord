@@ -9,9 +9,9 @@ const parser = new RSSParser();
 // ID de la chaîne YouTube et URL du webhook
 const WEBHOOK_URL = process.env.WEBHOOK_URL;
 const YOUTUBE_CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID;
-
+process.env.YMONGODB
 // Connexion à MongoDB
-mongoose.connect('mongodb://localhost:27017/youtube', {
+mongoose.connect(process.env.MONGODB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
