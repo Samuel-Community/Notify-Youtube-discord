@@ -1,25 +1,29 @@
-require('dotenv').config();
-const axios = require('axios');
-const RSSParser = require('rss-parser');
-const mongoose = require('mongoose');
-const Video = require('./video'); // Le modèle Mongoose pour les vidéos
+require("dotenv").config();
+const axios = require("axios");
+const RSSParser = require("rss-parser");
+const mongoose = require("mongoose");
+const Video = require("./video"); // Le modèle Mongoose pour les vidéos
 
 const parser = new RSSParser();
 
 // ID de la chaîne YouTube et URL du webhook
 const WEBHOOK_URL = process.env.WEBHOOK_URL;
 const YOUTUBE_CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID;
-process.env.YMONGODB
+
 // Connexion à MongoDB
-mongoose.connect(process.env.MONGODB)
-  .then(() => console.log('Connecté à MongoDB'))
-  .catch(err => console.error('Erreur de connexion à MongoDB :', err));
+mongoose
+  .connect(process.env.MONGODB)
+  .then(() => console.log("Connecté à MongoDB"))
+  .catch((err) => console.error("Erreur de connexion à MongoDB :", err));
 
 // Fonction pour récupérer ou initialiser l'ID de la dernière vidéo
 async function getLastVideoId() {
   let video = await Video.findOne({ channelId: YOUTUBE_CHANNEL_ID });
   if (!video) {
-    video = await Video.create({ channelId: YOUTUBE_CHANNEL_ID, lastVideoId: '' });
+    video = await Video.create({
+      channelId: YOUTUBE_CHANNEL_ID,
+      lastVideoId: "",
+    });
   }
   return video;
 }
@@ -38,18 +42,20 @@ async function sendWebhookMessage(message, channelName) {
     await axios.post(WEBHOOK_URL, {
       content: message, // Contenu du message
       username: channelName,
-      avatar_url: process.env.AVATAR_URL
+      avatar_url: process.env.AVATAR_URL,
     });
-    console.log('Message envoyé via le webhook');
+    console.log("Message envoyé via le webhook");
   } catch (error) {
-    console.error('Erreur lors de l\'envoi du webhook :', error);
+    console.error("Erreur lors de l'envoi du webhook :", error);
   }
 }
 
 // Fonction pour vérifier les nouvelles vidéos
 async function checkForNewVideos() {
   try {
-    const feed = await parser.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${YOUTUBE_CHANNEL_ID}`);
+    const feed = await parser.parseURL(
+      `https://www.youtube.com/feeds/videos.xml?channel_id=${YOUTUBE_CHANNEL_ID}`
+    );
     const latestVideo = feed.items[0];
     const channelName = feed.title; // Récupère le nom de la chaîne
 
@@ -64,7 +70,7 @@ async function checkForNewVideos() {
       await sendWebhookMessage(message, channelName);
     }
   } catch (error) {
-    console.error('Erreur lors de la vérification des vidéos YouTube :', error);
+    console.error("Erreur lors de la vérification des vidéos YouTube :", error);
   }
 }
 
