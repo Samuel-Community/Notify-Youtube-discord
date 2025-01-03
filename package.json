@@ -1,6 +1,6 @@
 {
   "name": "notify-youtube-discord",
-  "version": "20.0",
+  "version": "2.0.0",
   "description": "New post video youtube to discord",
   "main": "index.js",
   "scripts": {
