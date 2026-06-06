@@ -1,25 +1,18 @@
 {
   "name": "notify-youtube-discord",
-  "version": "2.0.0",
-  "description": "New post video youtube to discord",
+  "version": "3.0.0",
+  "description": "YouTube → Discord notifications via PubSubHubbub (WebSub)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/T-TutoRapide/Notify-Youtube-discord.git"
-  },
-  "author": "TutoRapide",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/T-TutoRapide/Notify-Youtube-discord/issues"
-  },
-  "homepage": "https://github.com/T-TutoRapide/Notify-Youtube-discord#readme",
   "dependencies": {
     "axios": "^1.7.9",
     "dotenv": "^16.4.7",
+    "express": "^4.18.2",
+    "fast-xml-parser": "^5.8.0",
     "mongoose": "^8.8.3",
-    "rss-parser": "^3.13.0"
+    "xml2js": "^0.6.2"
   }
 }
