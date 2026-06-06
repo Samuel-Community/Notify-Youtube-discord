@@ -192,3 +192,9 @@ Invoke-WebRequest -Uri "http://localhost:3000/youtube/callback" `
 ├── .env-example    — template de configuration
 └── package.json
 ```
+
+##### Contact
+
+![Discord Banner 2](https://discordapp.com/api/guilds/753294055554809956/widget.png?style=banner2)
+
+Fait avec 💖 par [Samuel](https://discord.gg/YM9XTZP)
