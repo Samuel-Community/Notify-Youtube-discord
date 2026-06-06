@@ -1,0 +1,9 @@
+WEBHOOK_URL=https://discord.com/api/webhooks/...
+CALLBACK_URL=https://xxxx.ngrok-free.app
+HUB_SECRET=un_secret_optionnel
+MONGODB=mongodb://localhost:27017/youtube-notify
+PORT=3000
+
+# Tableau JSON — une entrée par chaîne YouTube
+# roleToMention et avatarUrl sont optionnels
+YOUTUBE_CHANNELS=[{"channelId":"UCxxxxxxxxxxxxxxxx","roleToMention":"","avatarUrl":""}]
