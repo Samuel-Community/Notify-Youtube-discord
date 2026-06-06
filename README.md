@@ -75,7 +75,10 @@ Un objet par chaîne à surveiller :
 | `avatarUrl` | ❌ | Avatar affiché pour le webhook Discord |
 
 **Où trouver le `channelId` ?**
-Sur la page de la chaîne YouTube → clic droit → "Afficher le code source" → chercher `channel_id`. Ou directement dans l'URL si elle contient `/channel/UCxxx`.
+
+Sur la page de la chaîne YouTube → clic droit → "Afficher le code source" → chercher `channel_id`. 
+
+Ou directement dans l'URL si elle contient `/channel/UCxxx`.
 
 ---
 
